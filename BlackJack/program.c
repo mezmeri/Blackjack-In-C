@@ -34,6 +34,7 @@ typedef struct
 } Card;
 
 // 1) Generate card-stack
+Card cardStack[52];
 
 // 2) Shuffle the card stack
 
@@ -51,7 +52,9 @@ typedef struct
 
 // 8) If the dealers card sum is higher than the players, the player loses. If the players card is higher than the dealer or the player has hit blackjack, the player wins automatically. The goes for the dealer.
 
-int main()
+int main(void)
 {
+
+    printf("%lu", sizeof(Card));
     return 0;
 }
