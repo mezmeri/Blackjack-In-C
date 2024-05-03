@@ -2,10 +2,10 @@
 
 typedef enum
 {
-    Spade,
-    Heart,
-    Diamond,
-    Club,
+    Spades = 1,
+    Hearts = 2,
+    Diamonds = 3,
+    Clubs = 4
 } suit;
 
 typedef enum
@@ -20,9 +20,9 @@ typedef enum
     Eight = 8,
     Nine = 9,
     Ten = 10,
-    Jack,
-    Queen,
-    King
+    Jack = 11,
+    Queen = 12,
+    King = 13
 
 } face;
 
@@ -31,10 +31,27 @@ typedef struct
     suit cardSuit;
     face cardFace;
 
-} Card;
+} card;
 
-// 1) Generate card-stack
-Card cardStack[52];
+// 1) Generate card-stack of Card structures
+card cardStack[52];
+
+void generate_card_stack()
+{
+    for (int i = 0; i < sizeof(cardStack); i++)
+    {
+        card card;
+        for (int suit = Hearts; suit <= Clubs; suit++)
+        {
+            card.cardSuit = suit;
+            for (int face = Ace; face <= King; face++)
+            {
+                card.cardFace = face;
+            }
+        }
+        cardStack[i] = card;
+    }
+}
 
 // 2) Shuffle the card stack
 
@@ -54,7 +71,12 @@ Card cardStack[52];
 
 int main(void)
 {
+    generate_card_stack();
 
-    printf("%lu", sizeof(Card));
+    // Printing elements from cardStack
+    for (int i = 0; i < sizeof(cardStack) / sizeof(cardStack[0]); i++)
+    {
+    }
+
     return 0;
 }
