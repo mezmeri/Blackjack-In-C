@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 typedef enum
 {
@@ -38,22 +40,33 @@ card cardStack[52];
 
 void generate_card_stack()
 {
-    for (int i = 0; i < sizeof(cardStack); i++)
+
+    card card;
+    int j = 0;
+    for (int suit = Spades; suit <= Clubs; suit++)
     {
-        card card;
-        for (int suit = Hearts; suit <= Clubs; suit++)
+        card.cardSuit = suit;
+        for (int face = Ace; face <= King; face++)
         {
-            card.cardSuit = suit;
-            for (int face = Ace; face <= King; face++)
-            {
-                card.cardFace = face;
-            }
+            card.cardFace = face;
+            cardStack[j] = card;
+            j++;
         }
-        cardStack[i] = card;
     }
 }
 
 // 2) Shuffle the card stack
+void shuffle_card_stack()
+{
+    int deckSize = sizeof(cardStack) / sizeof(cardStack[0]) - 1;
+    for (int i = deckSize; i >= 0; i--)
+    {
+        card temp = cardStack[i];
+        int random = rand() % deckSize - 0;
+        cardStack[i] = cardStack[random];
+        cardStack[random] = temp;
+    }
+}
 
 // 3) Give the player two cards
 
@@ -72,11 +85,7 @@ void generate_card_stack()
 int main(void)
 {
     generate_card_stack();
-
-    // Printing elements from cardStack
-    for (int i = 0; i < sizeof(cardStack) / sizeof(cardStack[0]); i++)
-    {
-    }
+    shuffle_card_stack();
 
     return 0;
 }
