@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
 
 typedef enum
 {
@@ -69,23 +70,75 @@ void shuffle_card_stack()
 }
 
 // 3) Give the player two cards
+void give_player_two_cards()
+{
+    int deckSize = sizeof(cardStack) / sizeof(cardStack[0]) - 1;
+    for (int i = 0; i < 1; i++)
+    {
+        playerHand[i] = cardStack[rand() % deckSize - 0];
+    }
+}
 
 // 4) Give the dealer two cards, but only reveal the first card
+card give_dealer_two_cards()
+{
+    int deckSize = sizeof(cardStack) / sizeof(cardStack[0]) - 1;
+    for (int i = 0; i < 1; i++)
+    {
+        dealerHand[i] = cardStack[rand() % deckSize - 0];
+    }
 
-// 5) Read the values of the players card, and ask the player to 'Hit', 'Stand' or 'Fold'
+    return dealerHand[0];
+}
 
-// 6) If the player 'Hit's, reevalutate the cards and see if the new value is lower, equal to or higher than 21.
+void deal_cards_first_round()
+{
+    for (int i = 0; i <= 2; i++)
+    {
+        playerHand[i] = cardStack[i];
+        dealerHand[i] = cardStack[i + 1];
+    }
+}
 
-// 6.2) If the value is lower, give the player a new chance to 'Hit', 'Stand' or 'Fold'.
+int evaluate_cards(card *pCard)
+{
+    int counter = 0;
+    int deckSize = sizeof(*pCard) / (sizeof(pCard[0]));
+    for (int i = 0; i < deckSize; i++)
+    {
+        counter += pCard[i].cardFace;
+    }
 
-// 7) If the player stands, reveal the dealers second card. If the sum of the cards are lower than 17, the dealer will take another card until the sum is >= 17.
+    return counter;
+}
 
-// 8) If the dealers card sum is higher than the players, the player loses. If the players card is higher than the dealer or the player has hit blackjack, the player wins automatically. The goes for the dealer.
+card playerHand[10];
+card dealerHand[10];
 
 int main(void)
 {
+    int dealerDeckValue = 0;
+    int playerDeckValue = 0;
+
     generate_card_stack();
     shuffle_card_stack();
+    deal_cards_first_round();
+
+    bool isGameRunning = true;
+
+    while (isGameRunning)
+    {
+    }
 
     return 0;
 }
+
+// 5) Read the values of the players card, and ask the player to 'Hit' or 'Stand'.
+
+// 6) If the player 'Hit's, reevalutate the cards and see if the new value is lower, equal to or higher than 21.
+
+// 6.2) If the value is lower, give the player a new chance to 'Hit', 'Stand'.
+
+// 7) If the player stands, reveal the dealers second card. If the sum of the cards are lower than 16, the dealer will take another card until the sum is > 16.
+
+// 8) If the dealers card sum is higher (but > 21) than the players, the player loses. If the players card is higher than the dealer or the player has hit blackjack, the player wins automatically. The same goes for the dealer.
