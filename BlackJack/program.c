@@ -37,11 +37,43 @@ typedef struct
 } card;
 
 // 1) Generate card-stack of Card structures
-card cardStack[52];
+card *get_card_stack()
+{
+    static card cardStack[52];
+    return cardStack;
+}
+
+int evaluate_deck_value(card *deck)
+{
+}
+
+card *get_player_hand()
+{
+    static card playerHand[10];
+    return playerHand;
+}
+
+void update_player_hand(card newCard)
+{
+    card *pPlayerHand = get_player_hand();
+    for (int i = 0; i < sizeof(pPlayerHand) / sizeof(pPlayerHand[0]); i++)
+    {
+        if (&pPlayerHand[i] == NULL)
+        {
+            pPlayerHand[i] = newCard;
+        }
+    }
+}
+
+card *get_dealer_hand()
+{
+    static card dealerHand[10];
+    return dealerHand;
+}
 
 void generate_card_stack()
 {
-
+    card cardStack[52] = get_card_stack();
     card card;
     int j = 0;
     for (int suit = Spades; suit <= Clubs; suit++)
@@ -59,6 +91,7 @@ void generate_card_stack()
 // 2) Shuffle the card stack
 void shuffle_card_stack()
 {
+    card cardStack[52] = get_card_stack();
     int deckSize = sizeof(cardStack) / sizeof(cardStack[0]) - 1;
     for (int i = deckSize; i >= 0; i--)
     {
@@ -70,33 +103,36 @@ void shuffle_card_stack()
 }
 
 // 3) Give the player two cards
-void give_player_two_cards()
+void give_player_two_cards(card *pPlayerHand)
 {
+    card cardStack[52] = get_card_stack();
     int deckSize = sizeof(cardStack) / sizeof(cardStack[0]) - 1;
     for (int i = 0; i < 1; i++)
     {
-        playerHand[i] = cardStack[rand() % deckSize - 0];
+        pPlayerHand[i] = cardStack[rand() % deckSize - 0];
     }
 }
 
 // 4) Give the dealer two cards, but only reveal the first card
-card give_dealer_two_cards()
+card give_dealer_two_cards(card *pDealerHand)
 {
+    card cardStack[52] = get_card_stack();
     int deckSize = sizeof(cardStack) / sizeof(cardStack[0]) - 1;
     for (int i = 0; i < 1; i++)
     {
-        dealerHand[i] = cardStack[rand() % deckSize - 0];
+        pDealerHand[i] = cardStack[rand() % deckSize - 0];
     }
 
-    return dealerHand[0];
+    return pDealerHand[0];
 }
 
-void deal_cards_first_round()
+void deal_cards_first_round(card *pPlayerHand, card *pDealerHand)
 {
+    card cardStack[52] = get_card_stack();
     for (int i = 0; i <= 2; i++)
     {
-        playerHand[i] = cardStack[i];
-        dealerHand[i] = cardStack[i + 1];
+        pPlayerHand[i] = cardStack[i];
+        pDealerHand[i] = cardStack[i + 1];
     }
 }
 
@@ -112,14 +148,8 @@ int evaluate_cards(card *pCard)
     return counter;
 }
 
-card playerHand[10];
-card dealerHand[10];
-
 int main(void)
 {
-    int dealerDeckValue = 0;
-    int playerDeckValue = 0;
-
     generate_card_stack();
     shuffle_card_stack();
     deal_cards_first_round();
