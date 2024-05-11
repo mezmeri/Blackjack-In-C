@@ -43,7 +43,7 @@ card *get_card_stack()
     return cardStack;
 }
 
-int evaluate_deck_value(card *deck)
+int evaluate_hand_value(card *deck)
 {
 }
 
