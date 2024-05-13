@@ -2,39 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
-
-typedef enum
-{
-    Spades = 1,
-    Hearts = 2,
-    Diamonds = 3,
-    Clubs = 4
-} suit;
-
-typedef enum
-{
-    Ace = 1,
-    Two = 2,
-    Three = 3,
-    Four = 4,
-    Five = 5,
-    Six = 6,
-    Seven = 7,
-    Eight = 8,
-    Nine = 9,
-    Ten = 10,
-    Jack = 11,
-    Queen = 12,
-    King = 13
-
-} face;
-
-typedef struct
-{
-    suit cardSuit;
-    face cardFace;
-
-} card;
+#include "queue.c"
 
 // 1) Generate card-stack of Card structures
 card *get_card_stack()
@@ -73,7 +41,7 @@ card *get_dealer_hand()
 
 void generate_card_stack()
 {
-    card cardStack[52] = get_card_stack();
+    card *cardStack = get_card_stack();
     card card;
     int j = 0;
     for (int suit = Spades; suit <= Clubs; suit++)
@@ -91,44 +59,32 @@ void generate_card_stack()
 // 2) Shuffle the card stack
 void shuffle_card_stack()
 {
-    card cardStack[52] = get_card_stack();
+    card *cardStack = get_card_stack();
     int deckSize = sizeof(cardStack) / sizeof(cardStack[0]) - 1;
     for (int i = deckSize; i >= 0; i--)
     {
         card temp = cardStack[i];
-        int random = rand() % deckSize - 0;
+        int random = rand() % deckSize;
         cardStack[i] = cardStack[random];
         cardStack[random] = temp;
     }
 }
 
+void add_cards_to_queue(card *cardStack)
+{
+    int deckSize = sizeof(cardStack) / sizeof(cardStack[0]);
+    for (int i = 0; i < deckSize; i++)
+    {
+        enqueue(&cardStack[i]);
+    }
+}
+
 // 3) Give the player two cards
-void give_player_two_cards(card *pPlayerHand)
-{
-    card cardStack[52] = get_card_stack();
-    int deckSize = sizeof(cardStack) / sizeof(cardStack[0]) - 1;
-    for (int i = 0; i < 1; i++)
-    {
-        pPlayerHand[i] = cardStack[rand() % deckSize - 0];
-    }
-}
-
 // 4) Give the dealer two cards, but only reveal the first card
-card give_dealer_two_cards(card *pDealerHand)
-{
-    card cardStack[52] = get_card_stack();
-    int deckSize = sizeof(cardStack) / sizeof(cardStack[0]) - 1;
-    for (int i = 0; i < 1; i++)
-    {
-        pDealerHand[i] = cardStack[rand() % deckSize - 0];
-    }
-
-    return pDealerHand[0];
-}
 
 void deal_cards_first_round(card *pPlayerHand, card *pDealerHand)
 {
-    card cardStack[52] = get_card_stack();
+    card *cardStack = get_card_stack();
     for (int i = 0; i <= 2; i++)
     {
         pPlayerHand[i] = cardStack[i];
@@ -151,14 +107,12 @@ int evaluate_cards(card *pCard)
 int main(void)
 {
     generate_card_stack();
-    shuffle_card_stack();
-    deal_cards_first_round();
+    // shuffle_card_stack();
 
-    bool isGameRunning = true;
-
-    while (isGameRunning)
-    {
-    }
+    card newcard;
+    newcard.cardFace = 2;
+    newcard.cardSuit = 2;
+    enqueue(&newcard);
 
     return 0;
 }
