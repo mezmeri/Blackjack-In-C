@@ -53,7 +53,7 @@ void dequeue()
 
 void enqueue(card *cardToBeAdded)
 {
-    printf("%p\n", (void *)cardToBeAdded);
-    card newCard = *cardToBeAdded;
-    printf("%p", newCard);
+    // printf("%p\n", (void *)cardToBeAdded);
+    // card newCard = *cardToBeAdded;
+    // printf("%p", newCard);
 }
