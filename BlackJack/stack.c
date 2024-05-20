@@ -21,7 +21,7 @@ Stack *initialize_stack()
     return stack;
 }
 
-int isEmpty(Stack *stack)
+void isEmpty(Stack *stack)
 {
 }
 

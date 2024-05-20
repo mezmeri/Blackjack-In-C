@@ -58,6 +58,15 @@ cardStruct *generate_card_data(cardStruct *cardStack)
     return cardStack;
 }
 
+void deal_cards(Card *playerHand, Card *dealerHand, Stack *stack)
+{
+    for (int i = 0; i < 2; i++)
+    {
+        Card *card = deal(stack);
+        playerHand[i] = *card;
+    }
+}
+
 char *get_card_name(Card card)
 {
     switch (card.cardSuit)
@@ -145,6 +154,7 @@ char *get_card_name(Card card)
 
 int main(void)
 {
+    bool isGameRunning = false;
     cardStruct *emptyCardStack = (cardStruct *)generate_empty_card_stack();
 
     // Generate card data and shuffle the cards
@@ -155,6 +165,16 @@ int main(void)
     for (int i = 0; i < 52; i++)
     {
         push(&cardStack->deck[i], stack);
+    }
+
+    Card playerHand[6];
+    Card dealerHand[6];
+
+    isGameRunning = true;
+    while (isGameRunning)
+    {
+
+        deal_cards(playerHand, dealerHand, stack);
     }
 
     free(stack);
