@@ -3,6 +3,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include "queue.c"
+#include <string.h>
 
 // This might be a little to hard to read in the context of the game I'm trying to create...
 typedef struct
@@ -12,10 +13,18 @@ typedef struct
 } cardStruct;
 
 // 1) Generate empty card-stack of Card structures
-cardStruct *generate_card_stack()
+cardStruct *generate_empty_card_stack()
 {
     cardStruct *cardStack = malloc(sizeof(cardStruct));
     cardStack->size = 52;
+    if (cardStack == NULL)
+    {
+        printf("Memory allocation error at generate_card_stack!");
+        return NULL;
+    }
+
+    cardStack->size = 52;
+
     return cardStack;
 }
 
@@ -23,7 +32,7 @@ cardStruct *generate_card_stack()
 cardStruct *generate_card_data(cardStruct *cardStack)
 {
     card card;
-    int j = 0;
+    unsigned int j = 0;
     for (int suit = Spades; suit <= Clubs; suit++)
     {
         card.cardSuit = suit;
@@ -36,32 +45,90 @@ cardStruct *generate_card_data(cardStruct *cardStack)
     }
 }
 
-int evaluate_hand_value(card *deck)
+// Looooong ahhh converter function
+char *get_card_name(card card)
 {
-}
-
-card *get_player_hand()
-{
-    static card playerHand[10];
-    return playerHand;
-}
-
-void update_player_hand(card newCard)
-{
-    card *pPlayerHand = get_player_hand();
-    for (int i = 0; i < sizeof(pPlayerHand) / sizeof(pPlayerHand[0]); i++)
+    switch (card.cardSuit)
     {
-        if (&pPlayerHand[i] == NULL)
-        {
-            pPlayerHand[i] = newCard;
-        }
-    }
-}
+    case Spades:
+        "Spades";
+        break;
 
-card *get_dealer_hand()
-{
-    static card dealerHand[10];
-    return dealerHand;
+    case Hearts:
+        "Hearts";
+        break;
+
+    case Diamonds:
+        "Diamonds";
+        break;
+
+    case Clubs:
+        "Clubs";
+        break;
+
+    default:
+        "Couldn't find card suit.";
+    }
+
+    switch (card.cardFace)
+    {
+    case Ace:
+        "Ace";
+        break;
+
+    case Two:
+        "Two";
+        break;
+
+    case Three:
+        "Three";
+        break;
+
+    case Four:
+        "Four";
+        break;
+
+    case Five:
+        "Five";
+        break;
+
+    case Six:
+        "Six";
+        break;
+
+    case Seven:
+        "Seven";
+        break;
+
+    case Eight:
+        "Eight";
+        break;
+
+    case Nine:
+        "Nine";
+        break;
+
+    case Ten:
+        "Ten";
+        break;
+
+    case Jack:
+        "Jack";
+        break;
+
+    case Queen:
+        "Queen";
+        break;
+
+    case King:
+        "King";
+        break;
+
+    default:
+        "Couldn't find card.face";
+    }
+
+    char cardName[10];
 }
 
 // 2) Shuffle the card stack
@@ -78,15 +145,6 @@ card *get_dealer_hand()
 //     }
 // }
 
-void add_cards_to_queue(card *cardStack)
-{
-    int deckSize = sizeof(cardStack) / sizeof(cardStack[0]);
-    for (int i = 0; i < deckSize; i++)
-    {
-        enqueue(&cardStack[i]);
-    }
-}
-
 // 3) Give the player two cards
 // 4) Give the dealer two cards, but only reveal the first card
 
@@ -100,22 +158,12 @@ void add_cards_to_queue(card *cardStack)
 //     }
 // }
 
-int evaluate_cards(card *pCard)
-{
-    int counter = 0;
-    int deckSize = sizeof(*pCard) / (sizeof(pCard[0]));
-    for (int i = 0; i < deckSize; i++)
-    {
-        counter += pCard[i].cardFace;
-    }
-
-    return counter;
-}
-
 int main(void)
 {
-    cardStruct *cardStack = generate_card_stack();
+    cardStruct *emptyCardStack = (cardStruct *)generate_empty_card_stack();
+    cardStruct *cardStack = generate_card_data(emptyCardStack);
 
+    // printf("SIZE: %d bytes", sizeof(*emptyCardStack));
     // shuffle_card_stack();
 
     // card newcard;
