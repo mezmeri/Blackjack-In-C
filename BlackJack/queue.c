@@ -1,43 +1,25 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include "card.c"
 
-typedef enum
+typedef struct Node Node;
+typedef struct Node
 {
-    Spades = 1,
-    Hearts = 2,
-    Diamonds = 3,
-    Clubs = 4
-} suit;
-
-typedef enum
-{
-    Ace = 1,
-    Two = 2,
-    Three = 3,
-    Four = 4,
-    Five = 5,
-    Six = 6,
-    Seven = 7,
-    Eight = 8,
-    Nine = 9,
-    Ten = 10,
-    Jack = 11,
-    Queen = 12,
-    King = 13
-
-} face;
+    Card *pData;
+    Node *pNext;
+} Node;
 
 typedef struct
 {
-    suit cardSuit;
-    face cardFace;
+    Node *top;
+} Stack;
 
-} card;
-
-typedef struct
+Stack *initialize_stack()
 {
-    card *pNode;
-    card *pNextCard;
-} node;
+    Stack *stack = (Stack *)malloc(sizeof(Stack));
+    stack->top = NULL;
+    return stack;
+}
 
 int isEmpty()
 {
@@ -47,13 +29,34 @@ int isFull()
 {
 }
 
-void dequeue()
+Card *deal(Stack *stack)
 {
+    if (stack == NULL)
+    {
+        return NULL;
+    }
+
+    Card *card;
+    Node *temp = stack->top;
+    card = stack->top->pData;
+    stack->top = stack->top->pNext;
+    free(temp);
+
+    return card;
 }
 
-void enqueue(card *cardToBeAdded)
+void push(Card *cardToBeAdded, Stack *stack)
 {
-    // printf("%p\n", (void *)cardToBeAdded);
-    // card newCard = *cardToBeAdded;
-    // printf("%p", newCard);
+    Node *node = malloc(sizeof(Node));
+    node->pData = cardToBeAdded;
+    if (stack->top == NULL)
+    {
+        stack->top = node;
+        stack->top->pNext = NULL;
+    }
+    else
+    {
+        node->pNext = stack->top;
+        stack->top = node;
+    }
 }

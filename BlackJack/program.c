@@ -5,19 +5,18 @@
 #include "queue.c"
 #include <string.h>
 
-// This might be a little to hard to read in the context of the game I'm trying to create...
 typedef struct
 {
     int size;
-    card deck[52];
+    Card deck[52];
 } cardStruct;
 
 cardStruct *shuffle_card_stack(cardStruct *cardStack)
 {
-    for (int i = 52; i >= 0; i--)
+    srand(time(NULL));
+    for (int i = 52; i > 0; i--)
     {
-        // Fisher-Yates shuffle algorithm
-        card temp = cardStack->deck[i];
+        Card temp = cardStack->deck[i];
         int random = rand() % 52;
         cardStack->deck[i] = cardStack->deck[random];
         cardStack->deck[random] = temp;
@@ -26,7 +25,6 @@ cardStruct *shuffle_card_stack(cardStruct *cardStack)
     return (cardStruct *)cardStack;
 }
 
-// 1) Generate empty card-stack of Card structures
 cardStruct *generate_empty_card_stack()
 {
     cardStruct *cardStack = malloc(sizeof(cardStruct));
@@ -42,17 +40,16 @@ cardStruct *generate_empty_card_stack()
     return cardStack;
 }
 
-// **Populate the empty card stack with actual data
 cardStruct *generate_card_data(cardStruct *cardStack)
 {
-    card card;
+    Card card;
     unsigned int j = 0;
-    for (int suit = Spades; suit <= Clubs; suit++)
+    for (int Suit = Spades; Suit <= Clubs; Suit++)
     {
-        card.cardSuit = suit;
-        for (int face = Ace; face <= King; face++)
+        card.cardSuit = Suit;
+        for (int Face = Ace; Face <= King; Face++)
         {
-            card.cardFace = face;
+            card.cardFace = Face;
             cardStack->deck[j] = card;
             j++;
         }
@@ -61,8 +58,7 @@ cardStruct *generate_card_data(cardStruct *cardStack)
     return cardStack;
 }
 
-// Looooong ahhh converter function
-char *get_card_name(card card)
+char *get_card_name(Card card)
 {
     switch (card.cardSuit)
     {
@@ -147,19 +143,6 @@ char *get_card_name(card card)
     char cardName[10];
 }
 
-// 3) Give the player two cards
-// 4) Give the dealer two cards, but only reveal the first card
-
-// void deal_cards_first_round(card *pPlayerHand, card *pDealerHand)
-// {
-//     card *cardStack = return_current_card_stack();
-//     for (int i = 0; i <= 2; i++)
-//     {
-//         pPlayerHand[i] = cardStack[i];
-//         pDealerHand[i] = cardStack[i + 1];
-//     }
-// }
-
 int main(void)
 {
     cardStruct *emptyCardStack = (cardStruct *)generate_empty_card_stack();
@@ -167,14 +150,14 @@ int main(void)
     // Generate card data and shuffle the cards
     cardStruct *cardStack = generate_card_data(emptyCardStack);
 
-    // printf("SIZE: %d bytes", sizeof(*emptyCardStack));
-    // shuffle_card_stack();
+    Stack *stack = initialize_stack();
 
-    // card newcard;
-    // newcard.cardFace = 2;
-    // newcard.cardSuit = 2;
-    // enqueue(&newcard);
+    for (int i = 0; i < 52; i++)
+    {
+        push(&cardStack->deck[i], stack);
+    }
 
+    free(stack);
     return 0;
 }
 
