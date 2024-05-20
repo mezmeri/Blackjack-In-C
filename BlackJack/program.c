@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
-#include "queue.c"
+#include "stack.c"
 #include <string.h>
 
 typedef struct
