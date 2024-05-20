@@ -1,1 +1,1 @@
-ardStack[i].cardFace, cardStack[i].cardSuit
+ardStack[i].cardFace, deck[i].cardSuit

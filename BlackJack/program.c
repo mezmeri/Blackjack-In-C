@@ -9,8 +9,22 @@
 typedef struct
 {
     int size;
-    card cardStack[52];
+    card deck[52];
 } cardStruct;
+
+cardStruct *shuffle_card_stack(cardStruct *cardStack)
+{
+    for (int i = 52; i >= 0; i--)
+    {
+        // Fisher-Yates shuffle algorithm
+        card temp = cardStack->deck[i];
+        int random = rand() % 52;
+        cardStack->deck[i] = cardStack->deck[random];
+        cardStack->deck[random] = temp;
+    }
+
+    return (cardStruct *)cardStack;
+}
 
 // 1) Generate empty card-stack of Card structures
 cardStruct *generate_empty_card_stack()
@@ -39,10 +53,12 @@ cardStruct *generate_card_data(cardStruct *cardStack)
         for (int face = Ace; face <= King; face++)
         {
             card.cardFace = face;
-            cardStack->cardStack[j] = card;
+            cardStack->deck[j] = card;
             j++;
         }
     }
+    cardStack = shuffle_card_stack(cardStack);
+    return cardStack;
 }
 
 // Looooong ahhh converter function
@@ -131,20 +147,6 @@ char *get_card_name(card card)
     char cardName[10];
 }
 
-// 2) Shuffle the card stack
-// void shuffle_card_stack()
-// {
-//     card *cardStack = return_current_card_stack();
-//     int deckSize = sizeof(cardStack) / sizeof(&cardStack[0]) - 1;
-//     for (int i = deckSize; i >= 0; i--)
-//     {
-//         card temp = cardStack[i];
-//         int random = rand() % deckSize;
-//         cardStack[i] = cardStack[random];
-//         cardStack[random] = temp;
-//     }
-// }
-
 // 3) Give the player two cards
 // 4) Give the dealer two cards, but only reveal the first card
 
@@ -161,6 +163,8 @@ char *get_card_name(card card)
 int main(void)
 {
     cardStruct *emptyCardStack = (cardStruct *)generate_empty_card_stack();
+
+    // Generate card data and shuffle the cards
     cardStruct *cardStack = generate_card_data(emptyCardStack);
 
     // printf("SIZE: %d bytes", sizeof(*emptyCardStack));
