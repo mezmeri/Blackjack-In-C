@@ -62,104 +62,126 @@ void deal_cards(Card *playerHand, Card *dealerHand, Stack *stack)
 {
     for (int i = 0; i < 2; i++)
     {
-        Card *card = deal(stack);
-        playerHand[i] = *card;
+        playerHand[i] = *deal(stack);
+        dealerHand[i] = *deal(stack);
     }
 }
 
 char *get_card_name(Card card)
 {
+    static char cardName[50];
+    char suitName[50];
+    char faceName[50];
+
     switch (card.cardSuit)
     {
     case Spades:
-        "Spades";
+        strcpy(suitName, "Spades");
         break;
 
     case Hearts:
-        "Hearts";
+        strcpy(suitName, "Hearts");
         break;
 
     case Diamonds:
-        "Diamonds";
+        strcpy(suitName, "Diamonds");
         break;
 
     case Clubs:
-        "Clubs";
+        strcpy(suitName, "Clubs");
         break;
 
     default:
-        "Couldn't find card suit.";
+        strcpy(suitName, "Couldn't find card suit.");
     }
 
     switch (card.cardFace)
     {
     case Ace:
-        "Ace";
+        strcpy(faceName, "Ace");
         break;
 
     case Two:
-        "Two";
+        strcpy(faceName, "Two");
         break;
 
     case Three:
-        "Three";
+        strcpy(faceName, "Three");
         break;
 
     case Four:
-        "Four";
+        strcpy(faceName, "Four");
         break;
 
     case Five:
-        "Five";
+        strcpy(faceName, "Five");
         break;
 
     case Six:
-        "Six";
+        strcpy(faceName, "Six");
         break;
 
     case Seven:
-        "Seven";
+        strcpy(faceName, "Seven");
         break;
 
     case Eight:
-        "Eight";
+        strcpy(faceName, "Eight");
         break;
 
     case Nine:
-        "Nine";
+        strcpy(faceName, "Nine");
         break;
 
     case Ten:
-        "Ten";
+        strcpy(faceName, "Ten");
         break;
 
     case Jack:
-        "Jack";
+        strcpy(faceName, "Jack");
         break;
 
     case Queen:
-        "Queen";
+        strcpy(faceName, "Queen");
         break;
 
     case King:
-        "King";
+        strcpy(faceName, "King");
         break;
 
     default:
-        "Couldn't find card.face";
+        strcpy(faceName, "Couldn't find card.face");
     }
 
-    char cardName[10];
+    snprintf(cardName, sizeof(cardName), "%s of %s", faceName, suitName);
+    return cardName;
+}
+
+int get_value_of_player_hand(Card *card, int deckSize)
+{
+    int value = 0;
+    for (int i = 0; i < deckSize; i++)
+    {
+        value += card->cardFace;
+        card += 1;
+    }
+    return value;
+}
+
+int get_value_of_dealer_hand(Card *card, int deckSize)
+{
+    int value = 0;
+    value += card->cardFace;
+    return value;
 }
 
 int main(void)
 {
+    // PRE-GAME PREPARATION
     bool isGameRunning = false;
     cardStruct *emptyCardStack = (cardStruct *)generate_empty_card_stack();
 
-    // Generate card data and shuffle the cards
     cardStruct *cardStack = generate_card_data(emptyCardStack);
-
     Stack *stack = initialize_stack();
 
     for (int i = 0; i < 52; i++)
@@ -167,14 +189,35 @@ int main(void)
         push(&cardStack->deck[i], stack);
     }
 
-    Card playerHand[6];
-    Card dealerHand[6];
+    int capacity = 2;
+    Card *playerHand = (Card *)malloc(capacity * sizeof(Card));
+    Card *dealerHand = (Card *)malloc(capacity * sizeof(Card));
+    if (playerHand == NULL)
+    {
+        fprintf(stderr, "Memory allocation failed!\n");
+        return 0;
+    }
 
+    // START GAME
     isGameRunning = true;
     while (isGameRunning)
     {
+        int playerHandValue = 0;
+        int dealerHandValue = 0;
+
+        printf("Dealing cards.....\n");
 
         deal_cards(playerHand, dealerHand, stack);
+
+        printf("Cards have been dealt.\n");
+
+        playerHandValue = get_value_of_player_hand(playerHand, capacity);
+        dealerHandValue = get_value_of_dealer_hand(dealerHand, capacity);
+        printf("YOUR HAND: %d\n", playerHandValue);
+        printf("DEALER HAND: %d\n", dealerHandValue);
+        printf("HIT: X\nSTAND: C\nHAND: V\n");
+
+        isGameRunning = false;
     }
 
     free(stack);
