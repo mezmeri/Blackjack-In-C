@@ -221,6 +221,8 @@ int main(void)
     }
 
     free(stack);
+    free(playerHand);
+    free(dealerHand);
     return 0;
 }
 
