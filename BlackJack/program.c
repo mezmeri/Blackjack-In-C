@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include "card.h"
 #include "stack.h"
-#include "commands.h"
 
 typedef struct
 {
@@ -224,10 +223,6 @@ int main(void)
         printf("DEALER HAND: %d\n", dealerHandValue);
         printf("HIT: X\nSTAND: C\nHAND: V\n");
         scanf("%c", userInput);
-        if (userInput == 'X')
-        {
-            command_hit(pPlayerHand, &capacity, pStack);
-        }
 
         printf("YOUR HAND: %d\n", playerHandValue);
 
