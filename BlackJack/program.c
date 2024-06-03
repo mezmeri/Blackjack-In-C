@@ -4,8 +4,8 @@
 #include <time.h>
 #include <stdbool.h>
 #include "card.h"
-#include "stack.c"
-#include "commands.c"
+#include "stack.h"
+#include "commands.h"
 
 typedef struct
 {
@@ -192,6 +192,9 @@ int main(void)
         push(&cardStack->deck[i], pStack);
     }
 
+    /*
+    Capacity of both the pPlayerHand and the pDealerHand array.
+    */
     int capacity = 2;
     Card *pPlayerHand = (Card *)malloc(capacity * sizeof(Card));
     Card *pDealerHand = (Card *)malloc(capacity * sizeof(Card));
@@ -223,7 +226,7 @@ int main(void)
         scanf("%c", userInput);
         if (userInput == 'X')
         {
-            command_hit(pPlayerHand, &capacity);
+            command_hit(pPlayerHand, &capacity, pStack);
         }
 
         printf("YOUR HAND: %d\n", playerHandValue);

@@ -15,6 +15,7 @@ typedef struct
     Node *top;
 } Stack;
 
+// Only use before isGameRunning is sat
 Stack *initialize_stack()
 {
     Stack *pStack = (Stack *)malloc(sizeof(Stack));
