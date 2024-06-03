@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <stdbool.h>
+#include "card.h"
 #include "stack.c"
-#include <string.h>
+#include "commands.c"
 
 typedef struct
 {
@@ -11,18 +13,18 @@ typedef struct
     Card deck[52];
 } cardStruct;
 
-cardStruct *shuffle_card_stack(cardStruct *cardStack)
+cardStruct *shuffle_card_stack(cardStruct *pCardStack)
 {
     srand(time(NULL));
     for (int i = 52; i > 0; i--)
     {
-        Card temp = cardStack->deck[i];
+        Card temp = pCardStack->deck[i];
         int random = rand() % 52;
-        cardStack->deck[i] = cardStack->deck[random];
-        cardStack->deck[random] = temp;
+        pCardStack->deck[i] = pCardStack->deck[random];
+        pCardStack->deck[random] = temp;
     }
 
-    return (cardStruct *)cardStack;
+    return (cardStruct *)pCardStack;
 }
 
 cardStruct *generate_empty_card_stack()
@@ -40,7 +42,7 @@ cardStruct *generate_empty_card_stack()
     return cardStack;
 }
 
-cardStruct *generate_card_data(cardStruct *cardStack)
+cardStruct *generate_card_data(cardStruct *pCardStack)
 {
     Card card;
     unsigned int j = 0;
@@ -50,20 +52,20 @@ cardStruct *generate_card_data(cardStruct *cardStack)
         for (int Face = Ace; Face <= King; Face++)
         {
             card.cardFace = Face;
-            cardStack->deck[j] = card;
+            pCardStack->deck[j] = card;
             j++;
         }
     }
-    cardStack = shuffle_card_stack(cardStack);
-    return cardStack;
+    pCardStack = shuffle_card_stack(pCardStack);
+    return pCardStack;
 }
 
-void deal_cards(Card *playerHand, Card *dealerHand, Stack *stack)
+void deal_cards(Card *pPlayerHand, Card *pDealerHand, Stack *pStack)
 {
     for (int i = 0; i < 2; i++)
     {
-        playerHand[i] = *deal(stack);
-        dealerHand[i] = *deal(stack);
+        pPlayerHand[i] = *deal(pStack);
+        pDealerHand[i] = *deal(pStack);
     }
 }
 
@@ -170,6 +172,7 @@ int get_value_of_player_hand(Card *card, int deckSize)
 
 int get_value_of_dealer_hand(Card *card, int deckSize)
 {
+    // Only return the first card as the dealer doesn't show the second card
     int value = 0;
     value += card->cardFace;
     return value;
@@ -182,17 +185,17 @@ int main(void)
     cardStruct *emptyCardStack = (cardStruct *)generate_empty_card_stack();
 
     cardStruct *cardStack = generate_card_data(emptyCardStack);
-    Stack *stack = initialize_stack();
+    Stack *pStack = initialize_stack();
 
     for (int i = 0; i < 52; i++)
     {
-        push(&cardStack->deck[i], stack);
+        push(&cardStack->deck[i], pStack);
     }
 
     int capacity = 2;
-    Card *playerHand = (Card *)malloc(capacity * sizeof(Card));
-    Card *dealerHand = (Card *)malloc(capacity * sizeof(Card));
-    if (playerHand == NULL)
+    Card *pPlayerHand = (Card *)malloc(capacity * sizeof(Card));
+    Card *pDealerHand = (Card *)malloc(capacity * sizeof(Card));
+    if (pPlayerHand == NULL)
     {
         fprintf(stderr, "Memory allocation failed!\n");
         return 0;
@@ -207,22 +210,30 @@ int main(void)
 
         printf("Dealing cards.....\n");
 
-        deal_cards(playerHand, dealerHand, stack);
+        deal_cards(pPlayerHand, pDealerHand, pStack);
 
         printf("Cards have been dealt.\n");
 
-        playerHandValue = get_value_of_player_hand(playerHand, capacity);
-        dealerHandValue = get_value_of_dealer_hand(dealerHand, capacity);
+        char userInput;
+        playerHandValue = get_value_of_player_hand(pPlayerHand, capacity);
+        dealerHandValue = get_value_of_dealer_hand(pDealerHand, capacity);
         printf("YOUR HAND: %d\n", playerHandValue);
         printf("DEALER HAND: %d\n", dealerHandValue);
         printf("HIT: X\nSTAND: C\nHAND: V\n");
+        scanf("%c", userInput);
+        if (userInput == 'X')
+        {
+            command_hit(pPlayerHand, &capacity);
+        }
+
+        printf("YOUR HAND: %d\n", playerHandValue);
 
         isGameRunning = false;
     }
 
-    free(stack);
-    free(playerHand);
-    free(dealerHand);
+    free(pStack);
+    free(pPlayerHand);
+    free(pDealerHand);
     return 0;
 }
 

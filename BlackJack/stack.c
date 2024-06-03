@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "card.c"
+#include "card.h"
 
 typedef struct Node Node;
 typedef struct Node
@@ -17,43 +17,43 @@ typedef struct
 
 Stack *initialize_stack()
 {
-    Stack *stack = (Stack *)malloc(sizeof(Stack));
-    stack->top = NULL;
-    return stack;
+    Stack *pStack = (Stack *)malloc(sizeof(Stack));
+    pStack->top = NULL;
+    return pStack;
 }
 
-void isEmpty(Stack *stack)
+void isEmpty(Stack *pStack)
 {
 }
 
-Card *deal(Stack *stack)
+Card *deal(Stack *pStack)
 {
-    if (stack == NULL)
+    if (pStack == NULL)
     {
         return NULL;
     }
 
     Card *card;
-    Node *temp = stack->top;
-    card = stack->top->pData;
-    stack->top = stack->top->pNext;
+    Node *temp = pStack->top;
+    card = pStack->top->pData;
+    pStack->top = pStack->top->pNext;
     free(temp);
 
     return card;
 }
 
-void push(Card *cardToBeAdded, Stack *stack)
+void push(Card *cardToBeAdded, Stack *pStack)
 {
-    Node *node = malloc(sizeof(Node));
-    node->pData = cardToBeAdded;
-    if (stack->top == NULL)
+    Node *pNode = malloc(sizeof(Node));
+    pNode->pData = cardToBeAdded;
+    if (pStack->top == NULL)
     {
-        stack->top = node;
-        stack->top->pNext = NULL;
+        pStack->top = pNode;
+        pStack->top->pNext = NULL;
     }
     else
     {
-        node->pNext = stack->top;
-        stack->top = node;
+        pNode->pNext = pStack->top;
+        pStack->top = pNode;
     }
 }
