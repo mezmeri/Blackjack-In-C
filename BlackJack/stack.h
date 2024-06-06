@@ -1,9 +1,8 @@
+#include <stdlib.h>
+#include "card.h"
 
 #ifndef STACK_H
 #define STACK_H
-
-#include <stdlib.h>
-#include "card.h"
 
 typedef struct Node Node;
 typedef struct Node

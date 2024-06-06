@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "card.h"
-#include "stack.h"
 
 typedef struct Node Node;
 typedef struct Node

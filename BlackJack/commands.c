@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "card.h"
 #include "stack.h"
-#include "commands.h"
 
 void command_hit(Card *pPlayerHand, int *pCapacity, Stack *pStack)
 {
