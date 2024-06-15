@@ -1,21 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "card.h"
+#include "stack.h"
 
-typedef struct Node Node;
-typedef struct Node
-{
-    // Maybe it should just contain the actual data instead of a pointer to the data? pointer hell incoming
-    Card *pData;
-    Node *pNext;
-} Node;
-
-typedef struct
-{
-    Node *top;
-} Stack;
-
-// Only use before isGameRunning is sat
 Stack *initialize_stack()
 {
     Stack *pStack = (Stack *)malloc(sizeof(Stack));

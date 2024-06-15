@@ -1,8 +1,6 @@
 {
     "files.associations": {
         "*.embeddedhtml": "html",
-        "commands.h": "c",
-        "stack.h": "c",
-        "card.h": "c"
+        "*.h": "c",
     }
 }
