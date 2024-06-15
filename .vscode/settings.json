@@ -1,6 +1,6 @@
 {
     "files.associations": {
         "*.embeddedhtml": "html",
-        "*.h": "c",
+        "*.h": "h",
     }
 }
