@@ -70,6 +70,7 @@ void deal_cards(Card *pPlayerHand, Card *pDealerHand, Stack *pStack)
     }
 }
 
+// Might need to put this in another file
 char *get_card_name(Card card)
 {
     static char cardName[50];
@@ -189,45 +190,48 @@ int main(void)
 
     for (int i = 0; i < 52; i++)
     {
+        // Push each card into a stack-structure
         push(&cardStack->deck[i], pStack);
     }
 
     // Capacity of both the pPlayerHand and the pDealerHand array.
-    int capacity = 2;
-    Card *pPlayerHand = (Card *)malloc(capacity * sizeof(Card));
-    Card *pDealerHand = (Card *)malloc(capacity * sizeof(Card));
+    int playerHandCapacity = 2;
+    int dealerHandCapacity = 2;
+    Card *pPlayerHand = (Card *)malloc(playerHandCapacity * sizeof(Card));
+    Card *pDealerHand = (Card *)malloc(dealerHandCapacity * sizeof(Card));
     if (pPlayerHand == NULL)
     {
         fprintf(stderr, "Memory allocation failed!\n");
         return 0;
     }
 
-    // START GAME
+    int playerHandValue = 0;
+    int dealerHandValue = 0;
+
+    printf("\nDealing cards.....\n");
+
+    deal_cards(pPlayerHand, pDealerHand, pStack);
+
+    printf("Cards have been dealt.\n\n");
+
+    char userInput[1];
+    playerHandValue = get_value_of_player_hand(pPlayerHand, playerHandCapacity);
+    dealerHandValue = get_value_of_dealer_hand(pDealerHand, dealerHandCapacity);
+
+    printf("YOUR HAND: %d\nDEALER: %d\n\n", playerHandValue, dealerHandValue);
+
+    // START THE ACTUAL GAME
     isGameRunning = true;
     while (isGameRunning)
     {
-        int playerHandValue = 0;
-        int dealerHandValue = 0;
-
-        printf("\nDealing cards.....\n");
-
-        deal_cards(pPlayerHand, pDealerHand, pStack);
-
-        printf("Cards have been dealt.\n\n");
-
-        char userInput[1];
-        playerHandValue = get_value_of_player_hand(pPlayerHand, capacity);
-        dealerHandValue = get_value_of_dealer_hand(pDealerHand, capacity);
-
-        printf("YOUR HAND: %d\nDEALER: %d\n\n", playerHandValue, dealerHandValue);
-
         printf("CHOOSE ACTION:\n1. HIT (X)\n2. STAND (C)\n3. VIEW (V)\n$: ");
         scanf("%s", &userInput);
 
+        // Making sure the player can't type in multiple characters and break the system by using a function to check if the command is actually valid. If the command is valid check_if_valid_command() will return 1. If not, it will return -1.
         int isValidCommand = check_if_valid_command(userInput);
-        // Making sure the player can't type in multiple characters and break the system by using a function to check if the command is actually valid. If the command is valid check_if_valid_command will return 1. If not, it will return -1.
         while (isValidCommand == -1)
         {
+            // Clear the console so that the error message doesn't clutter the terminal.
             printf("\e[1;1H\e[2J");
             printf("\nINVALID COMMAND!\n\n");
             printf("CHOOSE ACTION:\n1. HIT (X)\n2. STAND (C)\n3. VIEW (V)\n\n$: ");
@@ -239,6 +243,15 @@ int main(void)
             }
         }
 
+        if (isValidCommand)
+        {
+            read_command(userInput[0], pPlayerHand, pStack, &playerHandCapacity);
+            playerHandValue = get_value_of_dealer_hand(pPlayerHand, playerHandCapacity);
+            printf("%d", playerHandValue);
+            printf("SHIT U HIT A BITCH");
+        }
+
+        // Add a condition that sets this to false instead of it being falsed at the end of the while-loop.
         isGameRunning = false;
     }
 

@@ -14,4 +14,6 @@ Card *command_see_hand();
 
 int check_if_valid_command(char *command);
 
+void read_command(char command, Card *pPlayerHand, Stack *pStack, int *pCapacity);
+
 #endif

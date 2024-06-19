@@ -20,26 +20,34 @@ Card *command_view()
 {
 }
 
-void check_command_type(char command)
+// Read the valid command and call the correct function.
+void read_command(char command, Card *pPlayerHand, Stack *pStack, int *pCapacity)
 {
+    command = (char)command;
     switch (command)
     {
     case 'X':
+        command_hit(pPlayerHand, pCapacity, pStack);
         break;
 
     case 'x':
+        command_hit(pPlayerHand, pCapacity, pStack);
         break;
 
     case 'C':
+
         break;
 
     case 'c':
+
         break;
 
     case 'V':
+
         break;
 
     case 'v':
+
         break;
 
     default:
