@@ -215,7 +215,7 @@ int main(void)
 
         deal_cards(pPlayerHand, pDealerHand, pStack);
 
-        printf("Cards have been dealt.\n");
+        printf("Cards have been dealt.\n\n");
 
         char userInput;
         playerHandValue = get_value_of_player_hand(pPlayerHand, capacity);
@@ -223,10 +223,12 @@ int main(void)
         printf("YOUR HAND: %d\n", playerHandValue);
         printf("DEALER HAND: %d\n", dealerHandValue);
 
-        printf("Select action: HIT: X || STAND: C || HAND: V\n");
-        scanf("%s", userInput);
+        printf("CHOOSE ACTION \n(X - HIT, C - STAND, V - SHOW HAND)\n$: ");
+        scanf("%c", &userInput);
 
-        printf("INPUT WAS: %c", &userInput);
+        while (playerHandValue < 21 || dealerHandValue < 21)
+        {
+                }
 
         isGameRunning = false;
     }
