@@ -9,6 +9,7 @@
                 "-g",
                 "${file}",
                 "stack.c",
+                "commands.c",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],

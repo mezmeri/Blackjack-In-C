@@ -16,14 +16,50 @@ void command_stand()
 {
 }
 
-Card *command_see_player_hand()
+Card *command_view()
 {
 }
 
-// Returns positive number if the command is valid. If the command is not valid it will return -1.
-int check_if_valid_command(char command)
+void check_command_type(char command)
 {
     switch (command)
+    {
+    case 'X':
+        break;
+
+    case 'x':
+        break;
+
+    case 'C':
+        break;
+
+    case 'c':
+        break;
+
+    case 'V':
+        break;
+
+    case 'v':
+        break;
+
+    default:
+        break;
+    }
+}
+
+// Returns positive number if the command is valid. If the command is not valid it will return -1.
+int check_if_valid_command(char *command)
+{
+
+    for (int i = 0; i < 1; i++)
+    {
+        if (i > 1)
+        {
+            return -1;
+        }
+    }
+
+    switch (*command)
     {
     case 'X':
         return 1;

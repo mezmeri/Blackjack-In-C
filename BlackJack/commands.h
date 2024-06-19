@@ -12,4 +12,6 @@ void command_stand();
 
 Card *command_see_hand();
 
+int check_if_valid_command(char *command);
+
 #endif

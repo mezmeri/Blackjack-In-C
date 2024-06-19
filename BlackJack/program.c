@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <conio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -170,9 +171,9 @@ int get_value_of_player_hand(Card *card, int deckSize)
     return value;
 }
 
+// Returns only the first card as the dealer doesn't show the second card in the first round
 int get_value_of_dealer_hand(Card *card, int deckSize)
 {
-    // Only return the first card as the dealer doesn't show the second card
     int value = 0;
     value += card->cardFace;
     return value;
@@ -180,7 +181,6 @@ int get_value_of_dealer_hand(Card *card, int deckSize)
 
 int main(void)
 {
-    // PRE-GAME PREPARATION
     bool isGameRunning = false;
     cardStruct *emptyCardStack = (cardStruct *)generate_empty_card_stack();
 
@@ -192,9 +192,7 @@ int main(void)
         push(&cardStack->deck[i], pStack);
     }
 
-    /*
-    Capacity of both the pPlayerHand and the pDealerHand array.
-    */
+    // Capacity of both the pPlayerHand and the pDealerHand array.
     int capacity = 2;
     Card *pPlayerHand = (Card *)malloc(capacity * sizeof(Card));
     Card *pDealerHand = (Card *)malloc(capacity * sizeof(Card));
@@ -211,24 +209,35 @@ int main(void)
         int playerHandValue = 0;
         int dealerHandValue = 0;
 
-        printf("Dealing cards.....\n");
+        printf("\nDealing cards.....\n");
 
         deal_cards(pPlayerHand, pDealerHand, pStack);
 
         printf("Cards have been dealt.\n\n");
 
-        char userInput;
+        char userInput[1];
         playerHandValue = get_value_of_player_hand(pPlayerHand, capacity);
         dealerHandValue = get_value_of_dealer_hand(pDealerHand, capacity);
-        printf("YOUR HAND: %d\n", playerHandValue);
-        printf("DEALER HAND: %d\n", dealerHandValue);
 
-        printf("CHOOSE ACTION \n(X - HIT, C - STAND, V - SHOW HAND)\n$: ");
-        scanf("%c", &userInput);
+        printf("YOUR HAND: %d\nDEALER: %d\n\n", playerHandValue, dealerHandValue);
 
-        while (playerHandValue < 21 || dealerHandValue < 21)
+        printf("CHOOSE ACTION:\n1. HIT (X)\n2. STAND (C)\n3. VIEW (V)\n$: ");
+        scanf("%s", &userInput);
+
+        int isValidCommand = check_if_valid_command(userInput);
+        // Making sure the player can't type in multiple characters and break the system by using a function to check if the command is actually valid. If the command is valid check_if_valid_command will return 1. If not, it will return -1.
+        while (isValidCommand == -1)
         {
-                }
+            printf("\e[1;1H\e[2J");
+            printf("\nINVALID COMMAND!\n\n");
+            printf("CHOOSE ACTION:\n1. HIT (X)\n2. STAND (C)\n3. VIEW (V)\n\n$: ");
+            scanf("%s", &userInput);
+            isValidCommand = check_if_valid_command(userInput);
+            if (isValidCommand == 1)
+            {
+                break;
+            }
+        }
 
         isGameRunning = false;
     }
