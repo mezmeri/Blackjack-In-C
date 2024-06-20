@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "card.h"
-#include "stack.h"
+#include "headers/card.h"
+#include "headers/stack.h"
 
 Stack *initialize_stack()
 {

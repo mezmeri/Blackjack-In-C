@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "card.h"
+#include "headers/card.h"
 
 #ifndef STACK_H
 #define STACK_H
@@ -7,7 +7,6 @@
 typedef struct Node Node;
 typedef struct Node
 {
-    // Maybe it should just contain the actual data instead of a pointer to the data? pointer hell incoming
     Card *pData;
     Node *pNext;
 } Node;

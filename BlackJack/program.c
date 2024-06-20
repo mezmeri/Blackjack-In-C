@@ -4,17 +4,17 @@
 #include <string.h>
 #include <time.h>
 #include <stdbool.h>
-#include "card.h"
-#include "stack.h"
-#include "commands.h"
+#include "headers/card.h"
+#include "headers/stack.h"
+#include "headers/commands.h"
 
 typedef struct
 {
     int size;
     Card deck[52];
-} cardStruct;
+} cardStackStruct;
 
-cardStruct *shuffle_card_stack(cardStruct *pCardStack)
+cardStackStruct *shuffle_card_stack(cardStackStruct *pCardStack)
 {
     srand(time(NULL));
     for (int i = 52; i > 0; i--)
@@ -25,12 +25,12 @@ cardStruct *shuffle_card_stack(cardStruct *pCardStack)
         pCardStack->deck[random] = temp;
     }
 
-    return (cardStruct *)pCardStack;
+    return (cardStackStruct *)pCardStack;
 }
 
-cardStruct *generate_empty_card_stack()
+cardStackStruct *generate_empty_card_stack()
 {
-    cardStruct *cardStack = malloc(sizeof(cardStruct));
+    cardStackStruct *cardStack = malloc(sizeof(cardStackStruct));
     cardStack->size = 52;
     if (cardStack == NULL)
     {
@@ -43,7 +43,7 @@ cardStruct *generate_empty_card_stack()
     return cardStack;
 }
 
-cardStruct *generate_card_data(cardStruct *pCardStack)
+cardStackStruct *generate_card_data(cardStackStruct *pCardStack)
 {
     Card card;
     unsigned int j = 0;
@@ -161,10 +161,10 @@ char *get_card_name(Card card)
     return cardName;
 }
 
-int get_value_of_player_hand(Card *card, int deckSize)
+int get_value_of_player_hand(Card *card)
 {
     int value = 0;
-    for (int i = 0; i < deckSize; i++)
+    for (int i = 0; i < 10; i++)
     {
         value += card->cardFace;
         card += 1;
@@ -173,7 +173,7 @@ int get_value_of_player_hand(Card *card, int deckSize)
 }
 
 // Returns only the first card as the dealer doesn't show the second card in the first round
-int get_value_of_dealer_hand(Card *card, int deckSize)
+int get_value_of_dealer_hand(Card *card)
 {
     int value = 0;
     value += card->cardFace;
@@ -183,9 +183,9 @@ int get_value_of_dealer_hand(Card *card, int deckSize)
 int main(void)
 {
     bool isGameRunning = false;
-    cardStruct *emptyCardStack = (cardStruct *)generate_empty_card_stack();
+    cardStackStruct *emptyCardStack = (cardStackStruct *)generate_empty_card_stack();
 
-    cardStruct *cardStack = generate_card_data(emptyCardStack);
+    cardStackStruct *cardStack = generate_card_data(emptyCardStack);
     Stack *pStack = initialize_stack();
 
     for (int i = 0; i < 52; i++)
@@ -194,29 +194,21 @@ int main(void)
         push(&cardStack->deck[i], pStack);
     }
 
-    // Capacity of both the pPlayerHand and the pDealerHand array.
-    int playerHandCapacity = 2;
-    int dealerHandCapacity = 2;
-    Card *pPlayerHand = (Card *)malloc(playerHandCapacity * sizeof(Card));
-    Card *pDealerHand = (Card *)malloc(dealerHandCapacity * sizeof(Card));
-    if (pPlayerHand == NULL)
-    {
-        fprintf(stderr, "Memory allocation failed!\n");
-        return 0;
-    }
-
     int playerHandValue = 0;
     int dealerHandValue = 0;
 
+    Card playerHand[10];
+    Card dealerHand[10];
+
     printf("\nDealing cards.....\n");
 
-    deal_cards(pPlayerHand, pDealerHand, pStack);
+    deal_cards(playerHand, dealerHand, pStack);
 
     printf("Cards have been dealt.\n\n");
 
     char userInput[1];
-    playerHandValue = get_value_of_player_hand(pPlayerHand, playerHandCapacity);
-    dealerHandValue = get_value_of_dealer_hand(pDealerHand, dealerHandCapacity);
+    playerHandValue = get_value_of_player_hand(playerHand);
+    dealerHandValue = get_value_of_dealer_hand(dealerHand);
 
     printf("YOUR HAND: %d\nDEALER: %d\n\n", playerHandValue, dealerHandValue);
 
@@ -245,9 +237,9 @@ int main(void)
 
         if (isValidCommand)
         {
-            read_command(userInput[0], pPlayerHand, pStack, &playerHandCapacity);
-            playerHandValue = get_value_of_dealer_hand(pPlayerHand, playerHandCapacity);
-            printf("%d", playerHandValue);
+            read_command(userInput[0], playerHand, pStack);
+            playerHandValue = get_value_of_dealer_hand(playerHand);
+            printf("%d\n", playerHandValue);
             printf("SHIT U HIT A BITCH");
         }
 
@@ -256,8 +248,6 @@ int main(void)
     }
 
     free(pStack);
-    free(pPlayerHand);
-    free(pDealerHand);
     return 0;
 }
 

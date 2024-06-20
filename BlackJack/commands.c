@@ -1,15 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "card.h"
-#include "stack.h"
+#include "headers/card.h"
+#include "headers/stack.h"
 
-void command_hit(Card *pPlayerHand, int *pCapacity, Stack *pStack)
+void command_hit(Card *pPlayerHand, Stack *pStack)
 {
     pPlayerHand = realloc(pPlayerHand, sizeof(Card));
-
-    *pCapacity++;
-
-    pPlayerHand[*pCapacity] = *deal(pStack);
 }
 
 void command_stand()
@@ -21,17 +17,17 @@ Card *command_view()
 }
 
 // Read the valid command and call the correct function.
-void read_command(char command, Card *pPlayerHand, Stack *pStack, int *pCapacity)
+void read_command(char command, Card *pPlayerHand, Stack *pStack)
 {
     command = (char)command;
     switch (command)
     {
     case 'X':
-        command_hit(pPlayerHand, pCapacity, pStack);
+        command_hit(pPlayerHand, pStack);
         break;
 
     case 'x':
-        command_hit(pPlayerHand, pCapacity, pStack);
+        command_hit(pPlayerHand, pStack);
         break;
 
     case 'C':
