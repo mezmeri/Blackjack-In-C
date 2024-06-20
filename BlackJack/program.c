@@ -61,15 +61,6 @@ cardStackStruct *generate_card_data(cardStackStruct *pCardStack)
     return pCardStack;
 }
 
-void deal_cards(Card *pPlayerHand, Card *pDealerHand, Stack *pStack)
-{
-    for (int i = 0; i < 2; i++)
-    {
-        pPlayerHand[i] = *deal(pStack);
-        pDealerHand[i] = *deal(pStack);
-    }
-}
-
 // Might need to put this in another file
 char *get_card_name(Card card)
 {
@@ -161,54 +152,30 @@ char *get_card_name(Card card)
     return cardName;
 }
 
-int get_value_of_player_hand(Card *card)
-{
-    int value = 0;
-    for (int i = 0; i < 10; i++)
-    {
-        value += card->cardFace;
-        card += 1;
-    }
-    return value;
-}
-
-// Returns only the first card as the dealer doesn't show the second card in the first round
-int get_value_of_dealer_hand(Card *card)
-{
-    int value = 0;
-    value += card->cardFace;
-    return value;
-}
-
 int main(void)
 {
     bool isGameRunning = false;
     cardStackStruct *emptyCardStack = (cardStackStruct *)generate_empty_card_stack();
-
     cardStackStruct *cardStack = generate_card_data(emptyCardStack);
-    Stack *pStack = initialize_stack();
 
+    // The card stack used in the game
+    Stack *pStack = initialize_stack();
     for (int i = 0; i < 52; i++)
     {
-        // Push each card into a stack-structure
         push(&cardStack->deck[i], pStack);
     }
+
+    Stack *pPlayerHand = (Stack *)initialize_stack();
+    Stack *pDealerHand = (Stack *)initialize_stack();
 
     int playerHandValue = 0;
     int dealerHandValue = 0;
 
-    Card playerHand[10];
-    Card dealerHand[10];
-
     printf("\nDealing cards.....\n");
-
-    deal_cards(playerHand, dealerHand, pStack);
 
     printf("Cards have been dealt.\n\n");
 
     char userInput[1];
-    playerHandValue = get_value_of_player_hand(playerHand);
-    dealerHandValue = get_value_of_dealer_hand(dealerHand);
 
     printf("YOUR HAND: %d\nDEALER: %d\n\n", playerHandValue, dealerHandValue);
 
@@ -237,8 +204,7 @@ int main(void)
 
         if (isValidCommand)
         {
-            read_command(userInput[0], playerHand, pStack);
-            playerHandValue = get_value_of_dealer_hand(playerHand);
+            read_command(userInput[0], pPlayerHand, pStack);
             printf("%d\n", playerHandValue);
             printf("SHIT U HIT A BITCH");
         }

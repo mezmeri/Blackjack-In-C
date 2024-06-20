@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "headers/card.h"
+#include "card.h"
 
 #ifndef STACK_H
 #define STACK_H
@@ -7,7 +7,7 @@
 typedef struct Node Node;
 typedef struct Node
 {
-    Card *pData;
+    Card data;
     Node *pNext;
 } Node;
 
@@ -23,5 +23,7 @@ void isEmpty(Stack *pStack);
 Card *deal(Stack *pStack);
 
 void push(Card *cardToBeAdded, Stack *pStack);
+
+int amount(Stack *pStack);
 
 #endif

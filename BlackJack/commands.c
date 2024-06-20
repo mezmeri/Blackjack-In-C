@@ -17,7 +17,7 @@ Card *command_view()
 }
 
 // Read the valid command and call the correct function.
-void read_command(char command, Card *pPlayerHand, Stack *pStack)
+void read_command(char command, Stack *pPlayerHand, Stack *pStack)
 {
     command = (char)command;
     switch (command)
