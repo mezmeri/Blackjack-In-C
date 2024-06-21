@@ -14,8 +14,14 @@ Stack *initialize_stack()
     return pStack;
 }
 
-void isEmpty(Stack *pStack)
+int isEmpty(Stack *pStack)
 {
+    if (pStack == NULL)
+    {
+        return -1;
+    }
+
+    return 1;
 }
 
 // Remove the top card from the stack
