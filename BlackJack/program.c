@@ -172,6 +172,7 @@ int main(void)
     int dealerHandValue = 0;
 
     printf("\nDealing cards.....\n");
+    // Add the dealing functionality of the first round
 
     printf("Cards have been dealt.\n\n");
 
@@ -214,6 +215,8 @@ int main(void)
     }
 
     free(pStack);
+    free(pPlayerHand);
+    free(pDealerHand);
     return 0;
 }
 
