@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "headers/card.h"
 #include "headers/stack.h"
+#include <string.h>
 
 void command_hit(Card *pPlayerHand, Stack *pStack)
 {
@@ -54,8 +55,7 @@ void read_command(char command, Stack *pPlayerHand, Stack *pStack)
 // Returns positive number if the command is valid. If the command is not valid it will return -1.
 int check_if_valid_command(char *command)
 {
-
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < strlen(command); i++)
     {
         if (i > 1)
         {

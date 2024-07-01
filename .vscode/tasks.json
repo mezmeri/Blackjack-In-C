@@ -10,6 +10,7 @@
                 "${file}",
                 "stack.c",
                 "commands.c",
+                "services.c",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],

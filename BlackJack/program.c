@@ -7,7 +7,9 @@
 #include "headers/card.h"
 #include "headers/stack.h"
 #include "headers/commands.h"
+#include "headers/services.h"
 
+// ngl this struct starts to seem unecessary
 typedef struct
 {
     int size;
@@ -61,7 +63,7 @@ cardStackStruct *generate_card_data(cardStackStruct *pCardStack)
     return pCardStack;
 }
 
-// Might need to put this in another file
+// Might need to put this in another header file
 char *get_card_name(Card card)
 {
     static char cardName[50];
@@ -158,7 +160,7 @@ int main(void)
     cardStackStruct *emptyCardStack = (cardStackStruct *)generate_empty_card_stack();
     cardStackStruct *cardStack = generate_card_data(emptyCardStack);
 
-    // The card stack used in the game
+    // The card stack used in the game... use this when dealing cards... please
     Stack *pStack = initialize_stack();
     for (int i = 0; i < 52; i++)
     {
@@ -172,7 +174,9 @@ int main(void)
     int dealerHandValue = 0;
 
     printf("\nDealing cards.....\n");
+
     // Add the dealing functionality of the first round
+    deal_cards_first_round(pPlayerHand, pDealerHand, pStack);
 
     printf("Cards have been dealt.\n\n");
 
@@ -187,7 +191,7 @@ int main(void)
         printf("CHOOSE ACTION:\n1. HIT (X)\n2. STAND (C)\n3. VIEW (V)\n$: ");
         scanf("%s", &userInput);
 
-        // Making sure the player can't type in multiple characters and break the system by using a function to check if the command is actually valid. If the command is valid check_if_valid_command() will return 1. If not, it will return -1.
+        // Making sure the player can't type in multiple characters and break the system by using a function to check if the command is actually valid. If the command is valid check_if_valid_command() will return 1. If not, it will return -1 and not break out of the loop.
         int isValidCommand = check_if_valid_command(userInput);
         while (isValidCommand == -1)
         {
@@ -207,7 +211,6 @@ int main(void)
         {
             read_command(userInput[0], pPlayerHand, pStack);
             printf("%d\n", playerHandValue);
-            printf("SHIT U HIT A BITCH");
         }
 
         // Add a condition that sets this to false instead of it being falsed at the end of the while-loop.

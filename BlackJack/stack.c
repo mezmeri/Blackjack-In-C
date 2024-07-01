@@ -16,12 +16,6 @@ Stack *initialize_stack()
 
 int isEmpty(Stack *pStack)
 {
-    if (pStack == NULL)
-    {
-        return -1;
-    }
-
-    return 1;
 }
 
 // Remove the top card from the stack
@@ -32,10 +26,18 @@ Card *deal(Stack *pStack)
         return NULL;
     }
 
+    if (pStack->top == NULL)
+    {
+        printf("Card stack is empty.");
+        return NULL;
+    }
+
     Card card;
     Node *temp = pStack->top;
-    card = pStack->top->data;
+    card = temp->data;
     pStack->top = pStack->top->pNext;
+
+    free(temp);
 
     return &card;
 }
@@ -47,7 +49,7 @@ void push(Card *cardToBeAdded, Stack *pStack)
 
     pNode->data = *cardToBeAdded;
 
-    if (&pStack->top == NULL)
+    if (pStack->top == NULL)
     {
         pStack->top = pNode;
         pStack->top->pNext = NULL;
@@ -57,9 +59,5 @@ void push(Card *cardToBeAdded, Stack *pStack)
         pNode->pNext = pStack->top;
         pStack->top = pNode;
     }
-}
-
-// Total value of all items in the stack
-int amount(Stack *pStack)
-{
+    free(pNode);
 }

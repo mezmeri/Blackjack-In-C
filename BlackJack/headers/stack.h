@@ -4,6 +4,7 @@
 #ifndef STACK_H
 #define STACK_H
 
+
 typedef struct Node Node;
 typedef struct Node
 {
@@ -18,12 +19,10 @@ typedef struct
 
 Stack *initialize_stack();
 
-void isEmpty(Stack *pStack);
+int isEmpty(Stack *pStack);
 
 Card *deal(Stack *pStack);
 
 void push(Card *cardToBeAdded, Stack *pStack);
-
-int amount(Stack *pStack);
 
 #endif
