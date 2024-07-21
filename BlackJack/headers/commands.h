@@ -8,7 +8,7 @@ void command_hit(Card *pPlayerHand, Stack *pStack);
 
 void command_stand();
 
-Card *command_view();
+Stack *command_view();
 
 void read_command(char command, Stack *pPlayerHand, Stack *pStack);
 

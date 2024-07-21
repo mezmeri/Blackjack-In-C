@@ -209,7 +209,7 @@ int main(void)
         if (isValidCommand)
         {
             read_command(userInput[0], pPlayerHand, pStack);
-            printf("TEST VALUE: %d\n", playerHandValue);
+            get_value_of_hand(pPlayerHand);
         }
 
         // Add a condition that sets this to false instead of it being falsed at the end of the while-loop.

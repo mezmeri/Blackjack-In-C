@@ -4,16 +4,21 @@
 #include "headers/stack.h"
 #include <string.h>
 
-void command_hit(Card *pPlayerHand, Stack *pStack)
+void command_hit(Stack *pPlayerHand, Stack *pStack)
 {
-    pPlayerHand = realloc(pPlayerHand, sizeof(Card));
+    Node *temp = pPlayerHand->top;
+    Node *newNode = deal(pStack);
+
+    pStack->top = newNode;
+    newNode->pNext = temp;
 }
 
+// If the player stands at any point, the dealers end-game turn should begin. This means that the dealer should reveal their second card, and then begin to add cards to their stack until a value greater than or equal to 16 is reached.
 void command_stand()
 {
 }
 
-Card *command_view()
+Stack *command_view()
 {
 }
 

@@ -22,3 +22,19 @@ void deal_cards_first_round(Stack *pPlayerHand, Stack *pDealerHand, Stack *pStac
         }
     }
 }
+
+int get_value_of_hand(Stack *pStack)
+{
+    int result = 0;
+
+    Node *current = pStack->top;
+    while (current != NULL)
+    {
+        if (current->pNext == NULL)
+        {
+            break;
+        }
+        result += current->data.cardFace;
+        current = current->pNext;
+    }
+}
