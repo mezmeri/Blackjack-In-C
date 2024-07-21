@@ -9,7 +9,7 @@
 #include "headers/commands.h"
 #include "headers/services.h"
 
-// ngl this struct starts to seem unecessary
+// ### The functions in this file should be moved to another file at some point.
 typedef struct
 {
     int size;
@@ -63,7 +63,7 @@ cardStackStruct *generate_card_data(cardStackStruct *pCardStack)
     return pCardStack;
 }
 
-// Might need to put this in another header file
+// Might need to put this in another header file....
 char *get_card_name(Card card)
 {
     static char cardName[50];
@@ -182,16 +182,15 @@ int main(void)
 
     char userInput[1];
 
-    printf("YOUR HAND: %d\nDEALER: %d\n\n", playerHandValue, dealerHandValue);
-
     // START THE ACTUAL GAME
     isGameRunning = true;
     while (isGameRunning)
     {
+        printf("YOUR HAND: %d\nDEALER: %d\n\n", playerHandValue, dealerHandValue);
         printf("CHOOSE ACTION:\n1. HIT (X)\n2. STAND (C)\n3. VIEW (V)\n$: ");
         scanf("%s", &userInput);
 
-        // Making sure the player can't type in multiple characters and break the system by using a function to check if the command is actually valid. If the command is valid check_if_valid_command() will return 1. If not, it will return -1 and not break out of the loop.
+        // Making sure the player can't type in multiple characters and break the system by using a function to check if the command is actually valid. If the command is valid the function will return 1. If not, it will return -1 and not break out of the loop.
         int isValidCommand = check_if_valid_command(userInput);
         while (isValidCommand == -1)
         {
@@ -210,7 +209,7 @@ int main(void)
         if (isValidCommand)
         {
             read_command(userInput[0], pPlayerHand, pStack);
-            printf("%d\n", playerHandValue);
+            printf("TEST VALUE: %d\n", playerHandValue);
         }
 
         // Add a condition that sets this to false instead of it being falsed at the end of the while-loop.
@@ -222,13 +221,3 @@ int main(void)
     free(pDealerHand);
     return 0;
 }
-
-// 5) Read the values of the players card, and ask the player to 'Hit' or 'Stand'.
-
-// 6) If the player 'Hit's, reevalutate the cards and see if the new value is lower, equal to or higher than 21.
-
-// 6.2) If the value is lower, give the player a new chance to 'Hit', 'Stand'.
-
-// 7) If the player stands, reveal the dealers second card. If the sum of the cards are lower than 16, the dealer will take another card until the sum is > 16.
-
-// 8) If the dealers card sum is higher (but > 21) than the players, the player loses. If the players card is higher than the dealer or the player has hit blackjack, the player wins automatically. The same goes for the dealer.

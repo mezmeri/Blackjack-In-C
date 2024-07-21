@@ -18,8 +18,7 @@ int isEmpty(Stack *pStack)
 {
 }
 
-// Remove the top card from the stack
-Card *deal(Stack *pStack)
+Node *deal(Stack *pStack)
 {
     if (pStack == NULL)
     {
@@ -32,32 +31,27 @@ Card *deal(Stack *pStack)
         return NULL;
     }
 
-    Card card;
-    Node *temp = pStack->top;
-    card = temp->data;
+    Node *pNode = pStack->top;
     pStack->top = pStack->top->pNext;
+    pNode->pNext = NULL;
 
-    free(temp);
-
-    return &card;
+    return pNode;
 }
 
-// Add card to the top of the stack
 void push(Card *cardToBeAdded, Stack *pStack)
 {
-    Node *pNode = malloc(sizeof(Node));
+    Node *pNode = (Node *)malloc(sizeof(Node));
 
     pNode->data = *cardToBeAdded;
-
     if (pStack->top == NULL)
     {
         pStack->top = pNode;
         pStack->top->pNext = NULL;
     }
-    else
+
+    if (pNode != NULL)
     {
         pNode->pNext = pStack->top;
         pStack->top = pNode;
     }
-    free(pNode);
 }

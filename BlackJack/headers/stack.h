@@ -21,7 +21,7 @@ Stack *initialize_stack();
 
 int isEmpty(Stack *pStack);
 
-Card *deal(Stack *pStack);
+Node *deal(Stack *pStack);
 
 void push(Card *cardToBeAdded, Stack *pStack);
 
