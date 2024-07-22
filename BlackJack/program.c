@@ -45,7 +45,7 @@ cardStackStruct *generate_empty_card_stack()
     return cardStack;
 }
 
-cardStackStruct *generate_card_data(cardStackStruct *pCardStack)
+cardStackStruct *generate_card_data(cardStackStruct *pStack)
 {
     Card card;
     unsigned int j = 0;
@@ -55,103 +55,12 @@ cardStackStruct *generate_card_data(cardStackStruct *pCardStack)
         for (int Face = Ace; Face <= King; Face++)
         {
             card.cardFace = Face;
-            pCardStack->deck[j] = card;
+            pStack->deck[j] = card;
             j++;
         }
     }
-    pCardStack = shuffle_card_stack(pCardStack);
-    return pCardStack;
-}
-
-// Might need to put this in another header file....
-char *get_card_name(Card card)
-{
-    static char cardName[50];
-    char suitName[50];
-    char faceName[50];
-
-    switch (card.cardSuit)
-    {
-    case Spades:
-        strcpy(suitName, "Spades");
-        break;
-
-    case Hearts:
-        strcpy(suitName, "Hearts");
-        break;
-
-    case Diamonds:
-        strcpy(suitName, "Diamonds");
-        break;
-
-    case Clubs:
-        strcpy(suitName, "Clubs");
-        break;
-
-    default:
-        strcpy(suitName, "Couldn't find card suit.");
-    }
-
-    switch (card.cardFace)
-    {
-    case Ace:
-        strcpy(faceName, "Ace");
-        break;
-
-    case Two:
-        strcpy(faceName, "Two");
-        break;
-
-    case Three:
-        strcpy(faceName, "Three");
-        break;
-
-    case Four:
-        strcpy(faceName, "Four");
-        break;
-
-    case Five:
-        strcpy(faceName, "Five");
-        break;
-
-    case Six:
-        strcpy(faceName, "Six");
-        break;
-
-    case Seven:
-        strcpy(faceName, "Seven");
-        break;
-
-    case Eight:
-        strcpy(faceName, "Eight");
-        break;
-
-    case Nine:
-        strcpy(faceName, "Nine");
-        break;
-
-    case Ten:
-        strcpy(faceName, "Ten");
-        break;
-
-    case Jack:
-        strcpy(faceName, "Jack");
-        break;
-
-    case Queen:
-        strcpy(faceName, "Queen");
-        break;
-
-    case King:
-        strcpy(faceName, "King");
-        break;
-
-    default:
-        strcpy(faceName, "Couldn't find card.face");
-    }
-
-    snprintf(cardName, sizeof(cardName), "%s of %s", faceName, suitName);
-    return cardName;
+    pStack = shuffle_card_stack(pStack);
+    return pStack;
 }
 
 int main(void)
@@ -160,18 +69,16 @@ int main(void)
     cardStackStruct *emptyCardStack = (cardStackStruct *)generate_empty_card_stack();
     cardStackStruct *cardStack = generate_card_data(emptyCardStack);
 
-    // The card stack used in the game... use this when dealing cards... please
     Stack *pStack = initialize_stack();
     for (int i = 0; i < 52; i++)
     {
         push(&cardStack->deck[i], pStack);
     }
+    free(emptyCardStack);
+    free(cardStack);
 
     Stack *pPlayerHand = (Stack *)initialize_stack();
     Stack *pDealerHand = (Stack *)initialize_stack();
-
-    int playerHandValue = 0;
-    int dealerHandValue = 0;
 
     printf("\nDealing cards.....\n");
 
@@ -186,7 +93,6 @@ int main(void)
     isGameRunning = true;
     while (isGameRunning)
     {
-        printf("YOUR HAND: %d\nDEALER: %d\n\n", playerHandValue, dealerHandValue);
         printf("CHOOSE ACTION:\n1. HIT (X)\n2. STAND (C)\n3. VIEW (V)\n$: ");
         scanf("%s", &userInput);
 
@@ -194,8 +100,9 @@ int main(void)
         int isValidCommand = check_if_valid_command(userInput);
         while (isValidCommand == -1)
         {
-            // Clear the console so that the error message doesn't clutter the terminal.
+            // Clear all text so that the error message doesn't clutter the terminal.
             printf("\e[1;1H\e[2J");
+
             printf("\nINVALID COMMAND!\n\n");
             printf("CHOOSE ACTION:\n1. HIT (X)\n2. STAND (C)\n3. VIEW (V)\n\n$: ");
             scanf("%s", &userInput);

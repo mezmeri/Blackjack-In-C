@@ -8,7 +8,7 @@ Stack *initialize_stack()
     Stack *pStack = (Stack *)malloc(sizeof(Stack));
     if (pStack == NULL)
     {
-        printf(stderr, "Memory allocation failed");
+        printf("Memory allocation failed");
     }
     pStack->top = NULL;
     return pStack;
