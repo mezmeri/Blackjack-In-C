@@ -54,6 +54,60 @@ cardStackStruct *generate_card_data(cardStackStruct *pStack)
         card.cardSuit = Suit;
         for (int Face = Ace; Face <= King; Face++)
         {
+            // The cards need to hold their value... Might need to refactor.
+            switch (card.cardSuit)
+            {
+            case Ace:
+                card.value = 1;
+                break;
+
+            case Two:
+                card.value = 2;
+                break;
+
+            case Three:
+                card.value = 3;
+                break;
+
+            case Four:
+                card.value = 4;
+                break;
+
+            case Five:
+                card.value = 5;
+                break;
+
+            case Six:
+                card.value = 6;
+                break;
+
+            case Seven:
+                card.value = 7;
+                break;
+
+            case Eight:
+                card.value = 8;
+                break;
+
+            case Nine:
+                card.value = 9;
+                break;
+
+            case Ten:
+                card.value = 10;
+
+            case Jack:
+                card.value = 10;
+                break;
+
+            case Queen:
+                card.value = 10;
+                break;
+
+            case King:
+                card.value = 10;
+                break;
+            }
             card.cardFace = Face;
             pStack->deck[j] = card;
             j++;
