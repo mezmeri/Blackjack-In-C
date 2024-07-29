@@ -54,8 +54,10 @@ cardStackStruct *generate_card_data(cardStackStruct *pStack)
         card.cardSuit = Suit;
         for (int Face = Ace; Face <= King; Face++)
         {
+            card.cardFace = Face;
+
             // The cards need to hold their value... Might need to refactor.
-            switch (card.cardSuit)
+            switch (card.cardFace)
             {
             case Ace:
                 card.value = 1;
@@ -108,7 +110,6 @@ cardStackStruct *generate_card_data(cardStackStruct *pStack)
                 card.value = 10;
                 break;
             }
-            card.cardFace = Face;
             pStack->deck[j] = card;
             j++;
         }
@@ -128,8 +129,6 @@ int main(void)
     {
         push(&cardStack->deck[i], pStack);
     }
-    free(emptyCardStack);
-    free(cardStack);
 
     Stack *pPlayerHand = (Stack *)initialize_stack();
     Stack *pDealerHand = (Stack *)initialize_stack();
@@ -147,6 +146,12 @@ int main(void)
     isGameRunning = true;
     while (isGameRunning)
     {
+        int playerHandValue = 0;
+        int dealerHandValue = 0;
+
+        playerHandValue = get_value_of_hand(pPlayerHand);
+        dealerHandValue = get_value_of_hand(pDealerHand);
+
         printf("CHOOSE ACTION:\n1. HIT (X)\n2. STAND (C)\n3. VIEW (V)\n$: ");
         scanf("%s", &userInput);
 
@@ -170,7 +175,6 @@ int main(void)
         if (isValidCommand)
         {
             read_command(userInput[0], pPlayerHand, pStack);
-            get_value_of_hand(pPlayerHand);
         }
 
         // Add a condition that sets this to false instead of it being falsed at the end of the while-loop.
