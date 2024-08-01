@@ -178,6 +178,7 @@ int main(void)
         if (isValidCommand)
         {
             read_command(userInput[0], pPlayerHand, pStack);
+            playerHandValue = get_value_of_hand(pPlayerHand, false);
         }
 
         if(playerHandValue > 21)

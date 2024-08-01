@@ -9,8 +9,8 @@ void command_hit(Stack *pPlayerHand, Stack *pStack)
     Node *temp = pPlayerHand->top;
     Node *newNode = deal(pStack);
 
-    pStack->top = newNode;
-    newNode->pNext = temp;
+    pPlayerHand->top = newNode;
+    pPlayerHand->top->pNext = temp;
 }
 
 // If the player stands at any point, the dealers end-game turn should begin. This means that the dealer should reveal their second card, and then begin to add cards to their stack until a value greater than or equal to 16 is reached.
