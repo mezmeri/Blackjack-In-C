@@ -141,17 +141,20 @@ int main(void)
     printf("Cards have been dealt.\n\n");
 
     char userInput[1];
+    int playerHandValue = 0;
+    int dealerHandValue = 0;
 
     // START THE ACTUAL GAME
     isGameRunning = true;
     while (isGameRunning)
     {
-        int playerHandValue = 0;
-        int dealerHandValue = 0;
+        playerHandValue = get_value_of_hand(pPlayerHand, false);
+        dealerHandValue = get_value_of_hand(pDealerHand, true);
 
-        playerHandValue = get_value_of_hand(pPlayerHand);
-        dealerHandValue = get_value_of_hand(pDealerHand);
-
+        printf("#############################\n");
+        printf("YOUR HAND: %d\n", playerHandValue);
+        printf("DEALERS HAND: %d\n", dealerHandValue);
+        printf("#############################\n\n");
         printf("CHOOSE ACTION:\n1. HIT (X)\n2. STAND (C)\n3. VIEW (V)\n$: ");
         scanf("%s", &userInput);
 
@@ -177,8 +180,11 @@ int main(void)
             read_command(userInput[0], pPlayerHand, pStack);
         }
 
-        // Add a condition that sets this to false instead of it being falsed at the end of the while-loop.
-        isGameRunning = false;
+        if(playerHandValue > 21)
+        {
+            isGameRunning = false;
+            printf("Your hand value is over 21 (%d). You've lost.", playerHandValue);
+        }
     }
 
     free(pStack);

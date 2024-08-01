@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "headers/stack.h"
 #include "headers/card.h"
 #include "headers/services.h"
@@ -23,11 +24,18 @@ void deal_cards_first_round(Stack *pPlayerHand, Stack *pDealerHand, Stack *pStac
     }
 }
 
-int get_value_of_hand(Stack *pStack)
+int get_value_of_hand(Stack *pStack, bool showFirstCardOnly)
 {
     int result = 0;
 
     Node *current = pStack->top;
+
+    if(showFirstCardOnly)
+    {
+        result += current->data.value;
+        return result;
+    }
+
     while (current != NULL)
     {
         result += current->data.value;
