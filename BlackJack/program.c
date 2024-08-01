@@ -175,16 +175,39 @@ int main(void)
             }
         }
 
+        // The if-nesting is not pretty, but it'll do for now. :p
         if (isValidCommand)
         {
-            read_command(userInput[0], pPlayerHand, pStack);
+            read_command(userInput[0], pPlayerHand, pDealerHand, pStack);
             playerHandValue = get_value_of_hand(pPlayerHand, false);
+            dealerHandValue = get_value_of_hand(pDealerHand, false);
+
+            if (playerHandValue > dealerHandValue)
+            {
+                printf("\e[1;1H\e[2J");
+                printf("YOU WIN!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
+                isGameRunning = false;
+            }
+            else
+            {
+                printf("\e[1;1H\e[2J");
+                printf("YOU LOST!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
+                isGameRunning = false;
+            }
         }
 
-        if(playerHandValue > 21)
+        if (playerHandValue > 21)
         {
             isGameRunning = false;
-            printf("Your hand value is over 21 (%d). You've lost.", playerHandValue);
+            printf("\e[1;1H\e[2J");
+            printf("YOU LOST!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
+        }
+
+        if (dealerHandValue > 21)
+        {
+            isGameRunning = false;
+            printf("\e[1;1H\e[2J");
+            printf("YOU WIN!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
         }
     }
 

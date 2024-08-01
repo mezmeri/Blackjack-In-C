@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "headers/card.h"
 #include "headers/stack.h"
-#include <string.h>
+#include "headers/services.h"
 
 void command_hit(Stack *pPlayerHand, Stack *pStack)
 {
@@ -14,8 +15,23 @@ void command_hit(Stack *pPlayerHand, Stack *pStack)
 }
 
 // If the player stands at any point, the dealers end-game turn should begin. This means that the dealer should reveal their second card, and then begin to add cards to their stack until a value greater than or equal to 16 is reached.
-void command_stand()
+void command_stand(Stack *pDealerHand, Stack *pPlayerHand, Stack *pStack)
 {
+    int dealerHandValue = get_value_of_hand(pDealerHand, false);
+    int playerHandValue = get_value_of_hand(pPlayerHand, false);
+    printf("\e[1;1H\e[2J");
+    printf("You stand on %d\nDealers hand is %d\n", playerHandValue, dealerHandValue);
+
+    while (dealerHandValue <= 16)
+    {
+        Node *temp = pDealerHand->top;
+        Node *newNode = deal(pStack);
+
+        pDealerHand->top = newNode;
+        pDealerHand->top->pNext = temp;
+        dealerHandValue = get_value_of_hand(pDealerHand, false);
+        printf("Dealers new hand: %d", dealerHandValue);
+    }
 }
 
 Stack *command_view()
@@ -23,7 +39,7 @@ Stack *command_view()
 }
 
 // Read the valid command and call the correct function.
-void read_command(char command, Stack *pPlayerHand, Stack *pStack)
+void read_command(char command, Stack *pPlayerHand, Stack *pDealerHand, Stack *pStack)
 {
     command = (char)command;
     switch (command)
@@ -37,11 +53,11 @@ void read_command(char command, Stack *pPlayerHand, Stack *pStack)
         break;
 
     case 'C':
-
+        command_stand(pDealerHand, pPlayerHand, pStack);
         break;
 
     case 'c':
-
+        command_stand(pDealerHand, pPlayerHand, pStack);
         break;
 
     case 'V':
