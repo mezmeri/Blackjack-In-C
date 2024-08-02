@@ -10,7 +10,7 @@ You might need to build the executable from scratch in your terminal of choice i
 I've used the Fisher-Yates algorithm for shuffling the cards in the array. This was a great success.
 
 ### Card deck effect
-I've built a stack to resemble the card deck that is used in the game. This stack have a 'top' attribute, which is a pointer to the top card in the deck. The top card is only the one that can be dealt.
+I've built a stack to resemble the card deck that is used in the game. This stack have a 'top' attribute, which is a pointer to the top card in the deck. The top card is the only one that can be dealt to a player or dealer.
 
 ### The game logic
 The game is very, very simple. Currently, I haven't implemented the Ace rule, which makes Aces either count as 1 or 11. Currently, all Aces count as 1.
