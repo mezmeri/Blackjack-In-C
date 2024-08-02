@@ -140,7 +140,7 @@ int main(void)
 
     printf("Cards have been dealt.\n\n");
 
-    char userInput[1];
+    char userInput[2];
     int playerHandValue = 0;
     int dealerHandValue = 0;
 
@@ -151,7 +151,7 @@ int main(void)
     isGameRunning = true;
     while (isGameRunning)
     {
-        printf("\e[1;1H\e[2J");
+
         printf("#############################\n");
         printf("YOUR HAND: %d\n", playerHandValue);
         printf("DEALERS HAND: %d\n", dealerHandValue);
@@ -177,44 +177,33 @@ int main(void)
             }
         }
 
-        // The if-nesting is not pretty, but it'll do for now. :p
         if (isValidCommand)
         {
             read_command(userInput[0], pPlayerHand, pDealerHand, pStack);
             playerHandValue = get_value_of_hand(pPlayerHand, false);
-            dealerHandValue = get_value_of_hand(pDealerHand, false);
 
-            if (playerHandValue > dealerHandValue)
+            if (userInput[0] == 'c' || userInput[0] == 'C')
+            {
+                break;
+            }
+
+            if (playerHandValue > 21)
             {
                 isGameRunning = false;
-
                 printf("\e[1;1H\e[2J");
-                printf("YOU WIN!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
+                printf("YOU LOST!\n\nDealers hand: %d\nYour hand: %d", dealerHandValue, playerHandValue);
+                break;
             }
-            else
+
+            if (playerHandValue == 21)
             {
                 isGameRunning = false;
-
                 printf("\e[1;1H\e[2J");
-                printf("YOU LOST!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
+                printf("YOU WIN!!\n\nDealers hand: %d\nYour hand: %d", dealerHandValue, playerHandValue);
+                break;
             }
         }
-
-        if (playerHandValue > 21)
-        {
-            isGameRunning = false;
-
-            printf("\e[1;1H\e[2J");
-            printf("YOU LOST!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
-        }
-
-        if (dealerHandValue > 21)
-        {
-            isGameRunning = false;
-
-            printf("\e[1;1H\e[2J");
-            printf("YOU WIN!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
-        }
+        printf("\e[1;1H\e[2J");
     }
 
     free(pStack);

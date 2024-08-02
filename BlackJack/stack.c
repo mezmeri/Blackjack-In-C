@@ -9,6 +9,7 @@ Stack *initialize_stack()
     if (pStack == NULL)
     {
         printf("Memory allocation failed");
+        return NULL;
     }
     pStack->top = NULL;
     return pStack;

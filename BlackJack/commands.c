@@ -17,22 +17,51 @@ void command_hit(Stack *pPlayerHand, Stack *pStack)
 // If the player stands at any point, the dealers end-game turn should begin. This means that the dealer should reveal their second card, and then begin to add cards to their stack until a value greater than or equal to 16 is reached.
 void command_stand(Stack *pDealerHand, Stack *pPlayerHand, Stack *pStack)
 {
+    printf("\e[1;1H\e[2J");
     int dealerHandValue = get_value_of_hand(pDealerHand, false);
     int playerHandValue = get_value_of_hand(pPlayerHand, false);
-    printf("\e[1;1H\e[2J");
     printf("You stand on %d\nDealers hand is %d\n", playerHandValue, dealerHandValue);
 
     while (dealerHandValue <= 16)
     {
-        printf("\e[1;1H\e[2J");
-        printf("Dealing.....");
+        printf("\nDealing.....\n");
         Node *temp = pDealerHand->top;
         Node *newNode = deal(pStack);
 
         pDealerHand->top = newNode;
         pDealerHand->top->pNext = temp;
         dealerHandValue = get_value_of_hand(pDealerHand, false);
-        printf("Dealers new hand: %d", dealerHandValue);
+        printf("\nDealers new hand: %d", dealerHandValue);
+    }
+
+    if (dealerHandValue <= 21 && dealerHandValue > playerHandValue)
+    {
+        printf("\e[1;1H\e[2J");
+        printf("YOU LOST!\n\nDealers hand: %d\nYour hand: %d", dealerHandValue, playerHandValue);
+    }
+
+    if (playerHandValue > dealerHandValue && playerHandValue <= 21)
+    {
+        printf("\e[1;1H\e[2J");
+        printf("YOU WIN!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
+    }
+
+    if (dealerHandValue == playerHandValue)
+    {
+        printf("\e[1;1H\e[2J");
+        printf("TIE!\n\nDealers hand: %d\nYour hand: %d", dealerHandValue, playerHandValue);
+    }
+
+    if (playerHandValue > 21)
+    {
+        printf("\e[1;1H\e[2J");
+        printf("YOU LOST!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
+    }
+
+    if (dealerHandValue > 21)
+    {
+        printf("\e[1;1H\e[2J");
+        printf("YOU WIN!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
     }
 }
 
