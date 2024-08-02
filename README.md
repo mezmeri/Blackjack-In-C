@@ -2,6 +2,9 @@
 
 This project is just a way for me to learn and experiment with data structures in C, and in the meantime create a simple game of blackjack. 😎
 
+## If you want to try it
+You might need to build the executable from scratch in your terminal of choice if you choose to try it out.
+
 **Some nerdy info:**
 ### Shuffle algorithm
 I've used the Fisher-Yates algorithm for shuffling the cards in the array. This was a great success.
