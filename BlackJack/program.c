@@ -144,19 +144,21 @@ int main(void)
     int playerHandValue = 0;
     int dealerHandValue = 0;
 
+    playerHandValue = get_value_of_hand(pPlayerHand, false);
+    dealerHandValue = get_value_of_hand(pDealerHand, true);
+
     // START THE ACTUAL GAME
     isGameRunning = true;
     while (isGameRunning)
     {
-        playerHandValue = get_value_of_hand(pPlayerHand, false);
-        dealerHandValue = get_value_of_hand(pDealerHand, true);
-
+        printf("\e[1;1H\e[2J");
         printf("#############################\n");
         printf("YOUR HAND: %d\n", playerHandValue);
         printf("DEALERS HAND: %d\n", dealerHandValue);
         printf("#############################\n\n");
         printf("CHOOSE ACTION:\n1. HIT (X)\n2. STAND (C)\n3. VIEW (V)\n$: ");
-        scanf("%s", &userInput);
+
+        scanf("%1s", &userInput);
 
         // Making sure the player can't type in multiple characters and break the system by using a function to check if the command is actually valid. If the command is valid the function will return 1. If not, it will return -1 and not break out of the loop.
         int isValidCommand = check_if_valid_command(userInput);
@@ -167,7 +169,7 @@ int main(void)
 
             printf("\nINVALID COMMAND!\n\n");
             printf("CHOOSE ACTION:\n1. HIT (X)\n2. STAND (C)\n3. VIEW (V)\n\n$: ");
-            scanf("%s", &userInput);
+            scanf("%1s", &userInput);
             isValidCommand = check_if_valid_command(userInput);
             if (isValidCommand == 1)
             {
@@ -184,21 +186,24 @@ int main(void)
 
             if (playerHandValue > dealerHandValue)
             {
+                isGameRunning = false;
+
                 printf("\e[1;1H\e[2J");
                 printf("YOU WIN!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
-                isGameRunning = false;
             }
             else
             {
+                isGameRunning = false;
+
                 printf("\e[1;1H\e[2J");
                 printf("YOU LOST!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
-                isGameRunning = false;
             }
         }
 
         if (playerHandValue > 21)
         {
             isGameRunning = false;
+
             printf("\e[1;1H\e[2J");
             printf("YOU LOST!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
         }
@@ -206,6 +211,7 @@ int main(void)
         if (dealerHandValue > 21)
         {
             isGameRunning = false;
+
             printf("\e[1;1H\e[2J");
             printf("YOU WIN!\nYour hand: %d\nDealers hand: %d", playerHandValue, dealerHandValue);
         }

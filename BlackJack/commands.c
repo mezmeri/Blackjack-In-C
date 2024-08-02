@@ -24,6 +24,8 @@ void command_stand(Stack *pDealerHand, Stack *pPlayerHand, Stack *pStack)
 
     while (dealerHandValue <= 16)
     {
+        printf("\e[1;1H\e[2J");
+        printf("Dealing.....");
         Node *temp = pDealerHand->top;
         Node *newNode = deal(pStack);
 
@@ -34,6 +36,7 @@ void command_stand(Stack *pDealerHand, Stack *pPlayerHand, Stack *pStack)
     }
 }
 
+// This function might be redundant....
 Stack *command_view()
 {
 }
